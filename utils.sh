@@ -18,22 +18,26 @@ sys_ensure_folder_or_exit()
 
 sys_log_base()
 {
-  STATUS="$$1"
+  STATUS="$1"
   MSG="$2"
   DATE="$(date)"
-  printf "[%s] %s - %s"  "${STATUS}" "${DATE}"  "${MSG}"
+  printf "[%b] %s - %s\n"  "${STATUS}" "${DATE}"  "${MSG}"
 }
 
 sys_log_trace()
 {
+  set +x
   MSG="$1"
-  sys_log_base "-" "${MSG}" 
+  sys_log_base '-' "${MSG}"
+  set -x
 }
 
 sys_log_error()
 {
+  set +x
   MSG="$1"
   sys_log_base "!" "${MSG}" 
+  set -x
 }
 
 
