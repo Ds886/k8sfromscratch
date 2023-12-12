@@ -52,7 +52,7 @@ sc_cert_gen_ca()
 }
 EOF
 
-cat > ca-csr.json <<EOF
+  cat > ca-csr.json <<EOF
 {
   "CN": "Kubernetes",
   "key": {
@@ -76,14 +76,17 @@ EOF
 
 sc_cert_gen_simple()
 {
+  sys_log_trace "in sc_cert_gen_simple"
+  set +u
   sys_ensure_folder_or_exit "${BASE_DIR_CERT}"
   _FILE=$1
   _ORGANIZATION=$2
   _CN=$3
   [ -z "$_FILE" ] && echo "No file provided for the certificate" && exit 1
-  [ -z "$_Organization" ] && echo "No organization provided" && exit 1
+  [ -z "$_ORGANIZATION" ] && echo "No organization provided" && exit 1
   [ -z "$_CN" ] && echo "No CN provide for the certificate" && exit 1
-  [ -z "$_RESULT_FILE" ] && echo "No result file provide for the certificate" && exit 1
+  set -u
+  sys_log_trace "Generating certifcate FILE:${_FILE}, ORGANIZATION=${_ORGANIZATION}, CN=${_CN}"
   _ALGO="${CA_ALGO}"
   _SIZE="${CA_SIZE}"
   _CSR="${_FILE}-csr.json"
@@ -118,6 +121,7 @@ EOF
 
 sc_cert_gen_admin()
 {
+  sys_log_trace "in sc_cert_gen_admin"
   sc_cert_gen_simple "admin" "system:masters" "admin"
 }
 
@@ -193,7 +197,7 @@ sc_cert_gen_kubeapi()
   "CN": "kubernetes",
   "key": {
     "algo": "${CA_ALGO}",
-    "size": "${CA_SIZE}"
+    "size": ${CA_SIZE}
   },
   "names": [
     {
@@ -224,4 +228,29 @@ sc_cert_gen_serviceaccount()
 sc_cert_distrbute()
 {
   echo "TODO: cert distribution"
+}
+
+sc_cert_gen_all()
+{
+  sc_cert_gen_ca
+  # sc_cert_gen_admin
+  # sc_cert_gen_controller_manager
+  # sc_cert_gen_kube_proxy
+  # sc_cert_gen_scheduler
+  # sc_cert_gen_serviceaccount
+  # sc_cert_gen_kubeapi "${K8S_HOSTS_CONTR_EXTERNAL_IP}" "${K8S_HOSTS_CONTR_NAME}"
+  # sc_cert_gen_client "${K8S_HOSTS_CONTR_EXTERNAL_IP}" "${K8S_HOSTS_CONTR_INTERNAL_IP}" "${K8S_HOSTS_CONTR_NAME}"
+  sc_hosts_list=$(env |grep K8S_HOSTS|awk -F'_' '{print $3}'|sort| uniq| tr '\n' ' '| sed 's/ $//g')
+
+  # shellcheck disable=2066,2034
+  for instance in ${sc_hosts_list}
+  do
+    eval "_CURR_HOST_NAME=\${K8S_HOSTS_${instance}_NAME}"
+    eval "_CURR_HOST_EXT_IP=\${K8S_HOSTS_${instance}_EXTERNAL_IP}"
+    eval "_CURR_HOST_INT_IP=\${K8S_HOSTS_${instance}_INTERNAL_IP}"
+
+    sys_log_trace "Generating an host certificate - Hostname: $_CURR_HOST_NAME, External IP: $_CURR_HOST_EXT_IP, Internal IP: $_CURR_HOST_INT_IP"
+
+    sc_cert_gen_client "${_CURR_HOST_EXT_IP}" "${_CURR_HOST_INT_IP}" "${_CURR_HOST_NAME}"
+  done
 }
