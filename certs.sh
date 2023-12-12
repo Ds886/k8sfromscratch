@@ -1,27 +1,35 @@
 #!/bin/sh
 set -eux
-env
+
 set +ue
 CURR_VAR=$CA_COUNTRY_NAME
-[ -z "${CURR_VAR}" ] && (printf "Variable CA_COUNTRY_NAME is not defined\n please add it to your vars\n" && exit 1)
+[ -z "${CURR_VAR}" ] && printf "Variable CA_COUNTRY_NAME is not defined\n please add it to your vars\n" && exit 1
 
 CURR_VAR=$CA_LOCALITY
-[ -z "${CURR_VAR}" ] && (printf "Variable CA_LOCALITY is not defined\n please add it to your vars\n" && exit 1)
+[ -z "${CURR_VAR}" ] && printf "Variable CA_LOCALITY is not defined\n please add it to your vars\n" && exit 1
 
 # shellcheck disable=2153
 CURR_VAR=$CA_ORGANIZATION
-[ -z "${CURR_VAR}" ] && (printf "Variable CA_ORGANIZATION is not defined\n please add it to your vars\n" && exit 1)
+[ -z "${CURR_VAR}" ] && printf "Variable CA_ORGANIZATION is not defined\n please add it to your vars\n" && exit 1
 
 CURR_VAR=$CA_ORGANIZATION_UNIT
-[ -z "${CURR_VAR}" ] && (printf "Variable CA_ORGANIZATION_UNIT is not defined\n please add it to your vars\n" && exit 1)
+[ -z "${CURR_VAR}" ] && printf "Variable CA_ORGANIZATION_UNIT is not defined\n please add it to your vars\n" && exit 1
 
 CURR_VAR=$CA_ALGO
-[ -z "${CURR_VAR}" ] && (printf "Variable CA_ALGO is not defined\n please add it to your vars\n" && exit 1)
+[ -z "${CURR_VAR}" ] && printf "Variable CA_ALGO is not defined\n please add it to your vars\n" && exit 1
 
 CURR_VAR=$CA_SIZE
-[ -z "${CURR_VAR}" ] && (printf "Variable CA_SIZE is not defined\n please add it to your vars\n" && exit 1)
-set -ue
+[ -z "${CURR_VAR}" ] && printf "Variable CA_SIZE is not defined\n please add it to your vars\n" && exit 1
 
+CURR_VAR=$K8S_HOSTS_CONTR_NAME
+[ -z "${CURR_VAR}" ] && printf "Variable K8S_HOSTS_CONTR_NAME is not defined\n please add it to your vars\n" && exit 1
+
+CURR_VAR=$K8S_HOSTS_CONTR_EXTERNAL_IP
+[ -z "${CURR_VAR}" ] && printf "Variable K8S_HOSTS_CONTR_EXTERNAL_IP is not defined\n please add it to your vars\n" && exit 1
+
+CURR_VAR=$K8S_HOSTS_CONTR_INTERNAL_IP
+[ -z "${CURR_VAR}" ] && printf "Variable K8S_HOSTS_CONTR_INTERNAL_IP is not defined\n please add it to your vars\n" && exit 1
+set -ue
 
 sc_cert_gen_ca()
 {
