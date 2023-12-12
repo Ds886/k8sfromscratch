@@ -233,13 +233,13 @@ sc_cert_distrbute()
 sc_cert_gen_all()
 {
   sc_cert_gen_ca
-  # sc_cert_gen_admin
-  # sc_cert_gen_controller_manager
-  # sc_cert_gen_kube_proxy
-  # sc_cert_gen_scheduler
-  # sc_cert_gen_serviceaccount
-  # sc_cert_gen_kubeapi "${K8S_HOSTS_CONTR_EXTERNAL_IP}" "${K8S_HOSTS_CONTR_NAME}"
-  # sc_cert_gen_client "${K8S_HOSTS_CONTR_EXTERNAL_IP}" "${K8S_HOSTS_CONTR_INTERNAL_IP}" "${K8S_HOSTS_CONTR_NAME}"
+  sc_cert_gen_admin
+  sc_cert_gen_controller_manager
+  sc_cert_gen_kube_proxy
+  sc_cert_gen_scheduler
+  sc_cert_gen_serviceaccount
+  sc_cert_gen_kubeapi "${K8S_HOSTS_CONTR_EXTERNAL_IP}" "${K8S_HOSTS_CONTR_NAME}"
+  sc_cert_gen_client "${K8S_HOSTS_CONTR_EXTERNAL_IP}" "${K8S_HOSTS_CONTR_INTERNAL_IP}" "${K8S_HOSTS_CONTR_NAME}"
   sc_hosts_list=$(env |grep K8S_HOSTS|awk -F'_' '{print $3}'|sort| uniq| tr '\n' ' '| sed 's/ $//g')
 
   # shellcheck disable=2066,2034
