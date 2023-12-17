@@ -2,13 +2,13 @@
 set -eux
 DATE="$(date)"
 printf "[%s] %s - %s\n"  "-" "${DATE}"  "Staring operator cli"
-. ./utils.sh
+. ./kfs-utils.sh
 sys_log_trace "Checking dependencies"
-. ./deps.sh
+. ./kfs-deps.sh
 sys_log_trace "loading vars"
-. ./vars.sh
+. ./kfs-vars.sh
 sys_log_trace "loading certs"
-. ./certs.sh
+. ./kfs-certs.sh
 
 sys_log_trace "success import"
 
