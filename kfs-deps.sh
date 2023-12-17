@@ -1,6 +1,6 @@
 #!/bin/sh
 
-_DEPS_DEPS_RUNNER=ssh sshpass scp base64
+_DEPS_DEPS_RUNNER="ssh sshpass scp base64"
 _DEPS_DEPS_LIST="cfssl cfssljson python3 base64"
 _DEPS_DEPS_OPTIONAL="curl"
 
